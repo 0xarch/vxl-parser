@@ -2,32 +2,8 @@ import { Voxel, VoxelSection } from "../../../types";
 import { vxl, vxl_header, vxl_limb_header, vxl_limb_body, vxl_limb_tailer, voxel } from "./types";
 import { defaultPalette } from "./misc";
 
-// 与 bufferify 中完全一致的压缩函数（仅用于计算长度）
-function computeCompressedLength(voxels: voxel[], zSize: number): number {
-    let length = 0;
-    let z = 0;
-    while (z < zSize) {
-        let skip = 0;
-        while (z + skip < zSize && !voxels[z + skip].used) skip++;
-        length += 1; // skip 字节
-        z += skip;
-        if (z >= zSize) break;
-
-        let nv = 0;
-        while (z + nv < zSize && voxels[z + nv].used) nv++;
-        if (nv === 0) continue;
-
-        length += 1;             // 头部 nv
-        length += nv * 2;        // 颜色和法线
-        length += 1;             // 尾部 nv
-        z += nv;
-    }
-    length += 2; // 末尾填充
-    return length;
-}
-
 /**
- * 将标准化 Voxel 对象转换为 vxl 中间格式（计算好所有偏移量，供 bufferify 使用）
+ * 将标准化 Voxel 对象转换为 vxl 中间格式
  */
 export function voxelToVxl(voxel: Voxel, palette?: number[][]): vxl {
     const sections = voxel.sections;
@@ -36,7 +12,6 @@ export function voxelToVxl(voxel: Voxel, palette?: number[][]): vxl {
     const limb_headers: vxl_limb_header[] = [];
     const limb_bodies: vxl_limb_body[] = [];
     const limb_tailers: vxl_limb_tailer[] = [];
-    let totalBodySize = 0;
 
     for (let limbIdx = 0; limbIdx < nLimbs; limbIdx++) {
         const section = sections[limbIdx];
@@ -57,64 +32,59 @@ export function voxelToVxl(voxel: Voxel, palette?: number[][]): vxl {
 
         // 2. 构建每列体素数组（按 z 排序）
         const spansVoxels: (voxel | null)[][] = Array(nSpans);
-        for (let i = 0; i < nSpans; i++) spansVoxels[i] = new Array(zsize).fill(null);
+        for (let i = 0; i < nSpans; i++) {
+            spansVoxels[i] = new Array(zsize).fill(null);
+        }
+        
         for (const v of section.voxels) {
             if (!v.used) continue;
             const idx = v.y * xsize + v.x;
-            spansVoxels[idx][v.z] = { used: true, colour: v.colour, normal: v.normal, x: v.x, y: v.y, z: v.z };
+            spansVoxels[idx][v.z] = { 
+                used: true, 
+                colour: v.colour, 
+                normal: v.normal, 
+                x: v.x, 
+                y: v.y, 
+                z: v.z 
+            };
         }
-        // 转换为 voxel[]（未使用的填充 used=false）
+
+        // 3. 转换为 voxel[] 数组（未使用的填充 used=false）
         const spanArrays: voxel[][] = spansVoxels.map(arr =>
             arr.map(v => v ? v : { used: false, colour: 0, normal: 0, x: 0, y: 0, z: 0 })
         );
 
-        // 3. 计算每个跨度的压缩长度，并记录偏移（相对于 span_data 区域起始）
-        const spanStartOffsets = new Int32Array(nSpans);
-        const spanEndOffsets = new Int32Array(nSpans);
-        let dataOffset = 0;
-        for (let i = 0; i < nSpans; i++) {
-            const hasVoxels = spanArrays[i].some(v => v.used);
-            if (!hasVoxels) {
-                spanStartOffsets[i] = -1;
-                spanEndOffsets[i] = -1;
-                continue;
-            }
-            const len = computeCompressedLength(spanArrays[i], zsize);
-            spanStartOffsets[i] = dataOffset;
-            spanEndOffsets[i] = dataOffset + len;
-            dataOffset += len;
-        }
-
-        // 4. 构建 span_data 数组（仅存储解压后的体素，供 bufferify 重新压缩）
+        // 4. 构建 span_data 数组（存储解压后的体素）
         const span_data = new Array(nSpans);
         for (let i = 0; i < nSpans; i++) {
             span_data[i] = { voxels: spanArrays[i] };
         }
 
-        // 5. 计算 body 区域布局
-        const startArrayBytes = nSpans * 4;
-        const endArrayBytes = nSpans * 4;
-        const dataArrayBytes = dataOffset;
-        const bodySize = startArrayBytes + endArrayBytes + dataArrayBytes;
+        // 5. 肢体体（span_start/span_end: bufferify 会重新计算）
+        //    但为了类型安全，填充为长度为 nSpans 的 -1 数组
+        const limb_body: vxl_limb_body = {
+            span_start: new Array(nSpans).fill(-1),
+            span_end: new Array(nSpans).fill(-1),
+            span_data
+        };
 
-        // 6. 肢体尾字段
+        // 6. 肢体尾字段（偏移量会在 bufferify 中重新计算，任意）
         const scaleWorld = 1 / 12;
         const halfX = maxX / 2;
         const halfY = maxY / 2;
-        // 边界框（对称居中，底部 y=0）
         const minBounds = [-halfX, -halfY, 0];
-        const maxBounds = [ halfX,  halfY, maxZ];
+        const maxBounds = [halfX, halfY, maxZ];
         const transform = [
             [1, 0, 0, 0],
             [0, 1, 0, 0],
             [0, 0, 1, 0]
         ];
-        const normalType = 4;
+        const normalType = 4; // RA2
 
-        const tailer: vxl_limb_tailer = {
-            span_start_off: 0,
-            span_end_off: startArrayBytes,
-            span_data_off: startArrayBytes + endArrayBytes,
+        const limb_tailer: vxl_limb_tailer = {
+            span_start_off: 0,      // 占位，bufferify 会覆盖
+            span_end_off: 0,        // 占位，bufferify 会覆盖
+            span_data_off: 0,       // 占位，bufferify 会覆盖
             scale: scaleWorld,
             transform,
             minBounds,
@@ -125,7 +95,7 @@ export function voxelToVxl(voxel: Voxel, palette?: number[][]): vxl {
             normalType
         };
 
-        // 肢体头
+        // 7. 肢体头
         const limbName = section.name || `Limb${limbIdx}`;
         limb_headers.push({
             limb_name: limbName.slice(0, 15),
@@ -134,22 +104,17 @@ export function voxelToVxl(voxel: Voxel, palette?: number[][]): vxl {
             unknown2: 0
         });
 
-        limb_bodies.push({
-            span_start: Array.from(spanStartOffsets),
-            span_end: Array.from(spanEndOffsets),
-            span_data
-        });
-
-        limb_tailers.push(tailer);
-        totalBodySize += bodySize;
+        limb_bodies.push(limb_body);
+        limb_tailers.push(limb_tailer);
     }
 
+    // 8. 文件头（bodysize 会在 bufferify 中重新计算，这里先设为 0）
     const header: vxl_header = {
         filetype: "Voxel Animation",
         unknown: 1,
         n_limbs: nLimbs,
         n_limbs2: nLimbs,
-        bodysize: totalBodySize,
+        bodysize: 0,  // 占位，bufferify 会重新计算
         unknown2: 0x1f10,
         palette: palette || defaultPalette()
     };
