@@ -109,7 +109,7 @@ export function voxelToVxl(voxel: Voxel, palette?: number[][]): vxl {
             [0, 1, 0, 0],
             [0, 0, 1, 0]
         ];
-        const normalType = 4; // 与原始 RA2 风格一致
+        const normalType = 4;
 
         const tailer: vxl_limb_tailer = {
             span_start_off: 0,

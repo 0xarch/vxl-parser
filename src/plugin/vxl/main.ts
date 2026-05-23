@@ -1,5 +1,4 @@
 import { Voxel, VoxelBlock, VoxelSection } from "../../types";
-import { buildVXL } from "./lib/builder";
 import { bufferify } from "./lib/compiler";
 import { defaultPalette } from "./lib/misc";
 import { parseBuffer } from "./lib/parser";

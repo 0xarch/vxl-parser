@@ -1,3 +1,5 @@
+// 该文件不再需要，因为使用分离的标准化构建
+
 import { Voxel, VoxelSection } from "../../../types";
 import { voxel, vxl_limb_tailer } from "./types";
 import { defaultPalette } from "./misc";
