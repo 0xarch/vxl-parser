@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import VXLPlugin from "./plugin/vxl/main";
 import VOXPlugin from "./plugin/vox/main";
 import { standardPalToVoxPal, voxPalToStandardPal } from "./tool/vox_pal";
+import { computeVoxelNormals } from "./tool/auto_normal";
 
 const SupportedTypes = ['vxl', 'vox'];
 type __types = 'vxl' | 'vox'
@@ -43,6 +44,9 @@ if(convert_type[0] === 'vox') {
 if(convert_type[1] === 'vox') {
     standard_voxel = standardPalToVoxPal(standard_voxel);
 }
+
+// handle auto normal
+standard_voxel = computeVoxelNormals(standard_voxel, 3.4, true);
 
 const output = (()=>{
     if (convert_type[1] === 'vox') {
