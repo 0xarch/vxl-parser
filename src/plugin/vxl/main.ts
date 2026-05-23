@@ -23,9 +23,10 @@ export default class VXLPlugin {
             const body = vxl.limb_body[i];
 
             // 边界框最大值 = 尺寸 - 1（因为坐标从 0 开始）
-            const maxX = tailer.xsize - 1;
-            const maxY = tailer.ysize - 1;
-            const maxZ = tailer.zsize - 1;
+            // const maxX = tailer.xsize - 1;
+            // const maxY = tailer.ysize - 1;
+            // const maxZ = tailer.zsize - 1;
+            let maxX = 0, maxY = 0, maxZ = 0;
 
             const voxels: VoxelBlock[] = [];
 
@@ -42,14 +43,32 @@ export default class VXLPlugin {
                             y: vox.y,
                             z: vox.z
                         });
+                        maxX = Math.max(maxX, vox.x);
+                        maxY = Math.max(maxY, vox.y);
+                        maxZ = Math.max(maxZ, vox.z);
                     }
                 }
             }
 
+            maxX += 1;
+            maxY += 1;
+            maxZ += 1;
+
+            // calc offset
+            const offset_x = (tailer.maxBounds[0] + tailer.minBounds[0]);
+            const offset_y = (tailer.maxBounds[1] + tailer.minBounds[1]);
+            // const offset_z = (tailer.maxBounds[2] + tailer.maxBounds[2]) / 2;
+            const offset_z = tailer.maxBounds[2] - (tailer.zsize + maxZ) / 2;
+
+            // console.log(tailer.maxBounds, tailer.minBounds, [offset_x, offset_y], [tailer.xsize, tailer.ysize], [maxX, maxY]);
+
             sections.push({
                 name,
                 max_bound_box: [maxX, maxY, maxZ],
-                voxels
+                voxels,
+                offset_x,
+                offset_y,
+                offset_z
             });
         }
 

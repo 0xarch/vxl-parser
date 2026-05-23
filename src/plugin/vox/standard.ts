@@ -41,10 +41,24 @@ export function standarize(voxData: VoxData): Voxel {
             };
         }
 
+        const offset = model.offset;
+
+        // console.log(offset);
+
+        offset.x = offset.x / 2 + 1;
+        offset.y = offset.y + 1;
+
+        [offset.x, offset.y] = [offset.y, offset.x];
+        // offset_z转为地面坐标系
+        offset.z = offset.z - stdSz / 2;
+
         sections.push({
             voxels: blocks,
             max_bound_box: [stdSx - 1, stdSy - 1, stdSz - 1],
             name: `vox-${i}`,
+            offset_x: offset.x,
+            offset_y: offset.y,
+            offset_z: offset.z
         });
     }
 
@@ -86,14 +100,17 @@ export function toLocalType(voxel: Voxel): VoxData {
             });
         }
 
+        const offset = { x: section.offset_x, y: section.offset_y, z: section.offset_z };
+
         models.push({
             size: { x: mvSx, y: mvSy, z: mvSz },
             voxels: voxelsList,
+            offset,
         });
     }
 
     if (models.length === 0) {
-        models.push({ size: { x: 0, y: 0, z: 0 }, voxels: [] });
+        models.push({ size: { x: 0, y: 0, z: 0 }, voxels: [], offset: { x: 0, y: 0, z: 0 } });
     }
 
     return {

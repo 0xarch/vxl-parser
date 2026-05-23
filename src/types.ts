@@ -6,6 +6,9 @@ export interface VoxelSection {
     voxels: VoxelBlock[];
     max_bound_box: [number,number,number]; // unsigned int[3] max bound box, can include empty voxel // every voxel should have non-neg coord (at least 0,0,0)
     name: string;
+    offset_x: number;
+    offset_y: number;
+    offset_z: number;
 }
 
 export interface VoxelBlock {

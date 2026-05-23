@@ -35,17 +35,17 @@ export function voxelToVxl(voxel: Voxel, palette?: number[][]): vxl {
         for (let i = 0; i < nSpans; i++) {
             spansVoxels[i] = new Array(zsize).fill(null);
         }
-        
+
         for (const v of section.voxels) {
             if (!v.used) continue;
             const idx = v.y * xsize + v.x;
-            spansVoxels[idx][v.z] = { 
-                used: true, 
-                colour: v.colour, 
-                normal: v.normal, 
-                x: v.x, 
-                y: v.y, 
-                z: v.z 
+            spansVoxels[idx][v.z] = {
+                used: true,
+                colour: v.colour,
+                normal: v.normal,
+                x: v.x,
+                y: v.y,
+                z: v.z
             };
         }
 
@@ -72,14 +72,16 @@ export function voxelToVxl(voxel: Voxel, palette?: number[][]): vxl {
         const scaleWorld = 1 / 12;
         const halfX = maxX / 2;
         const halfY = maxY / 2;
-        const minBounds = [-halfX, -halfY, 0];
-        const maxBounds = [halfX, halfY, maxZ];
+        const minBounds = [-halfX - section.offset_x + 0.5, -halfY - section.offset_y + 0.5, 0 + section.offset_z];
+        const maxBounds = [halfX - section.offset_x + 0.5, halfY + section.offset_y + 0.5, maxZ + section.offset_z];
         const transform = [
             [1, 0, 0, 0],
             [0, 1, 0, 0],
             [0, 0, 1, 0]
         ];
         const normalType = 4; // RA2
+        
+        // console.log(maxBounds, minBounds, [section.offset_x,section.offset_y,section.offset_z], [halfX]);
 
         const limb_tailer: vxl_limb_tailer = {
             span_start_off: 0,      // 占位，bufferify 会覆盖

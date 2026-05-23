@@ -24,3 +24,15 @@ bun ${tool_dir}/src/main.ts ${from_type}-${to_type} ${input_file} ${output_file}
 *   `autonormal`: `boolean`，指定是否启用自动法线。默认 `true` 。
 *   `normalrange`: `number`，指定自动法线算法应用的半径，默认 `3.5`。
 *   `palettetransform`: `boolean`，指定是否对vox文件应用色盘转换。该转换算法以上图中使用的色盘进行反向变换。
+
+## 多组件
+
+多组件支持尚在试验阶段。目前，你可以：
+*   读取多组件VXL和多组件VOX
+*   写入多组件VXL
+
+对于多组件VOX的支持因解析有问题，目前仅支持写入组件数据，无法记录位置，可能需要很长时间修复。
+
+已知问题：
+*   如果从有水平偏移的 VXL 转 VOX，可能导致该 VOX 转 VXL 后无法正确计算偏移位置。
+*   对于 VOX 模型盒比实际模型大的，可能导致无法正确计算偏移位置。因此在 MagicaVoxel 中搭建多组件应当使用干净的文件拖拽已有模型进行组装而不是直接在物体上组装。
