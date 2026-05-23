@@ -1,4 +1,4 @@
-import { VoxDocument, VoxModel, Voxel } from "./types";
+import { VoxData as VoxDocument, VoxModel, VoxVoxel,  } from "./types";
 
 export function readString(view: DataView, offset: number, length: number): string {
   let str = '';
@@ -55,7 +55,7 @@ export function parseChunks(buffer: ArrayBuffer, startOffset: number, endOffset:
       case 'XYZI': {
         if (contentSize >= 4 && currentSize) {
           const numVoxels = view.getInt32(contentStart, true);
-          const voxels: Voxel[] = [];
+          const voxels: VoxVoxel[] = [];
           for (let i = 0; i < numVoxels; i++) {
             const voxOffset = contentStart + 4 + i * 4;
             const x = view.getUint8(voxOffset);

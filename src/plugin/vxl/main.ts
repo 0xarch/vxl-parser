@@ -56,7 +56,9 @@ export default class VXLPlugin {
         return { sections };
     }
 
-    static rebuild(vxl: vxl): ArrayBuffer {
+    static rebuild(buffer: ArrayBuffer): ArrayBuffer {
+        let vxl = this.parse(buffer);
+
         let standard = this.standarize(vxl);
 
         let rebuilded = this.toLocalType(standard);

@@ -1,6 +1,5 @@
 import { VoxData } from "./types";
 
-
 export function bufferify(data: VoxData): ArrayBuffer {
     const chunksList: Uint8Array[] = [];
 
