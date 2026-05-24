@@ -8,10 +8,11 @@
 
 ![色盘截图](./asset/pal.png)
 
-此色盘自心灵终结中使用的拓展了尾区的 uniturb.pal 转换（应用了坐标变换以使颜色分布与VXLSE近似）。你可以手动根据 pal 文件解析。
+此色盘自心灵终结中使用的拓展了尾区的 uniturb.pal 转换 （应用了坐标变换以使颜色分布与VXLSE近似）。 你可以手动根据 pal 文件解析，或者使用这个 [Shell 脚本](./asset/build_palette.sh) 来自动将 RA2 色盘转换为 MagicaVoxel 色盘 （该脚本适配了行列转换，最终结果和在VXLSE中的排列近似相同）。
 
 使用方式：
-需求: 需要首先安装 Bun
+需求: 需要首先安装 Bun 或 Node.js （推荐 Bun 因为其更快，且原生支持 TypeScript）
+> 如果使用 Node.js，你需要提前安装 TypeScript 编译器将代码转换为 JavaScript，因为 Node.js 的原生TS支持仍然是实验性的。
 
 ```sh
 bun ${tool_dir}/src/main.ts ${from_type}-${to_type} ${input_file} ${output_file}
@@ -31,7 +32,9 @@ bun ${tool_dir}/src/main.ts ${from_type}-${to_type} ${input_file} ${output_file}
 *   读取多组件VXL和多组件VOX
 *   写入多组件VXL
 
-对于多组件VOX的支持因解析有问题，目前仅支持写入组件数据，无法记录位置，可能需要很长时间修复。
+对于多组件VOX的支持因无法定位MagicaVoxel解析nTRN/nSHP遇到的问题，目前仅支持写入组件数据，无法记录位置，可能需要很长时间修复。
+
+你仍然需要使用 HVA Builder 来为模型添加动画效果，目前暂未支持导出 MagicaVoxel 的动画。
 
 已知问题：
 *   如果从有水平偏移的 VXL 转 VOX，可能导致该 VOX 转 VXL 后无法正确计算偏移位置。
