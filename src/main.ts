@@ -67,7 +67,7 @@ if (config.palettetransform === true && convert_type[1] === 'vox') {
 if (config.autonormal) {
     // handle auto normal
     const normalrange = Number(config.normalrange) || 3.5;
-    standard_voxel = computeVoxelNormals(standard_voxel, normalrange, true);
+    standard_voxel = computeVoxelNormals(standard_voxel, normalrange);
 }
 
 const output = (() => {
