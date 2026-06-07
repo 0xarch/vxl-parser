@@ -68,7 +68,8 @@ export function parseChunks(buffer: ArrayBuffer, startOffset: number, endOffset:
           }
           context.models.push({
             size: currentSize,
-            voxels: voxels
+            voxels: voxels,
+            offset: { x: 0, y: 0, z: 0}
           });
           currentSize = null;
         }
