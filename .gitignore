@@ -1,3 +1,4 @@
 *.vxl
 node_modules
 **/test*
+compiled

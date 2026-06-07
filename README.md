@@ -13,6 +13,7 @@
 使用方式：
 需求: 需要首先安装 Bun 或 Node.js （推荐 Bun 因为其更快，且原生支持 TypeScript）
 > 如果使用 Node.js，你需要提前安装 TypeScript 编译器将代码转换为 JavaScript，因为 Node.js 的原生TS支持仍然是实验性的。
+> 默认的 tsconfig 配置已经将输出目录设置为 `./compiled`。
 
 ```sh
 bun ${tool_dir}/src/main.ts ${from_type}-${to_type} ${input_file} ${output_file}
