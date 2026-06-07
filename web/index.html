@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Voxel模型渲染器 - Three.js</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            outline: none;
+        }
+        .info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            pointer-events: none;
+            backdrop-filter: blur(5px);
+            z-index: 10;
+            font-family: monospace;
+        }
+        .controls-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(30,30,40,0.85);
+            backdrop-filter: blur(8px);
+            padding: 12px 18px;
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 20;
+            pointer-events: auto;
+            border: 1px solid rgba(255,255,255,0.2);
+            font-family: system-ui, sans-serif;
+        }
+        button {
+            background: #3a6ea5;
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+            font-weight: 500;
+        }
+        button:hover {
+            background: #2c5282;
+            transform: scale(1.02);
+        }
+        .status {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 5px;
+            text-align: center;
+        }
+        hr {
+            margin: 5px 0;
+            border-color: rgba(255,255,255,0.3);
+        }
+        a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 11px;
+        }
+        a:hover {
+            color: white;
+        }
+        [man] {
+            appearance: none;
+            border: 1px solid #285577;
+            background: #4c7899;
+            color: white;
+            border-radius: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="info">
+        DickSuck 的 Voxel 渲染器。使用超级人工辅助。
+    </div>
+    <div class="controls-panel">
+        <input man id="uploadFile" placeholder="上传文件" type="file" accept="*/*" multiple="true">
+        <div style="font-weight:bold; margin-bottom:4px;">🎮 控制演示</div>
+        <button id="randomPaletteBtn">🎨 随机调色板</button>
+        <button id="toggleSectionBtn">🔘 切换 Section 可见性 (Section 1)</button>
+        <div class="status" id="statusMsg">模型已加载 | 2个区块</div>
+    </div>
+
+    <!-- 引入Three.js核心库以及扩展 -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module" src="./main.mjs"></script>
+</body>
+</html> 
