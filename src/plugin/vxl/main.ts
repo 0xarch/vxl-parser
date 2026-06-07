@@ -1,9 +1,9 @@
-import { Voxel, VoxelBlock, VoxelSection } from "../../types";
-import { bufferify } from "./lib/compiler";
-import { defaultPalette } from "./lib/misc";
-import { parseBuffer } from "./lib/parser";
-import { voxelToVxl } from "./lib/targeter";
-import { vxl, vxl_header } from "./lib/types";
+import { Voxel, VoxelBlock, VoxelSection } from "../../types.js";
+import { bufferify } from "./lib/compiler.js";
+import { defaultPalette } from "./lib/misc.js";
+import { parseBuffer } from "./lib/parser.js";
+import { voxelToVxl } from "./lib/targeter.js";
+import { vxl, vxl_header } from "./lib/types.js";
 
 export default class VXLPlugin {
     static parse(buffer: ArrayBuffer): vxl {

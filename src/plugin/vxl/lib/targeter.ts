@@ -1,6 +1,6 @@
-import { Voxel, VoxelSection } from "../../../types";
-import { vxl, vxl_header, vxl_limb_header, vxl_limb_body, vxl_limb_tailer, voxel } from "./types";
-import { defaultPalette } from "./misc";
+import { Voxel, VoxelSection } from "../../../types.js";
+import { vxl, vxl_header, vxl_limb_header, vxl_limb_body, vxl_limb_tailer, voxel } from "./types.js";
+import { defaultPalette } from "./misc.js";
 
 /**
  * 将标准化 Voxel 对象转换为 vxl 中间格式

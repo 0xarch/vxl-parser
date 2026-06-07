@@ -1,5 +1,4 @@
 // compiler.ts
-import assert from "node:assert";
 import { voxel, vxl, vxl_limb_tailer } from "./types";
 
 function compressSpan(voxels: voxel[], zSize: number): Uint8Array {
@@ -150,7 +149,6 @@ export function bufferify(vxl: vxl): ArrayBuffer {
         view.setUint8(offset++, rgb[1]);
         view.setUint8(offset++, rgb[2]);
     }
-    assert(offset === 802);
 
     // 4. 写入肢体头
     for (let i = 0; i < nLimbs; i++) {
@@ -164,7 +162,6 @@ export function bufferify(vxl: vxl): ArrayBuffer {
         view.setUint32(offset, lh.unknown, true); offset += 4;
         view.setUint32(offset, lh.unknown2, true); offset += 4;
     }
-    assert(offset === 802 + nLimbs * 28);
 
     // 5. 写入 body 区域（连续拼接）
     const bodyStartOffset = offset;
@@ -188,7 +185,6 @@ export function bufferify(vxl: vxl): ArrayBuffer {
         currentBodyOff += data.compressedData.length;
     }
     offset = bodyStartOffset + totalBodySize;
-    assert(offset === bodyStartOffset + totalBodySize);
 
     // 6. 写入肢体尾（使用 newTailer）
     for (let i = 0; i < nLimbs; i++) {
