@@ -20,7 +20,7 @@ const PESO_SUPERFICIE = 1;
 
 const RAY_CASTING_STEPS = 12;
 
-const NORMAL_TABLE: Array<[number, number, number]> = RA2Normals_Table.map(v => [v.Y, v.X * -1, v.Z * -1]);
+const NORMAL_TABLE: Array<[number, number, number]> = RA2Normals_Table.map(v => [ (v.Z) * 1, (v.X) * 1, (v.Y) * 1 ]);
 
 function normalize(v: [number, number, number]): [number, number, number] {
     const len = Math.hypot(v[0], v[1], v[2]);
