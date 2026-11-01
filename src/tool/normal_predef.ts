@@ -3,8 +3,14 @@
  */
 export const RA2Normals_Table: {X: number, Y:number, Z:number}[] = [];
 
-for(let i =0; i<256;i++) {
-    RA2Normals_Table[i] = { X:0, Y:0, Z:0 };
+export const TSNormals_Table: {X: number, Y:number, Z:number}[] = [];
+
+for(let i =0; i<244;i++) {
+  RA2Normals_Table[i] = { X:0, Y:0, Z:0 };
+}
+
+for(let i =0; i<36;i++) {
+  TSNormals_Table[i] = { X:0, Y:0, Z:0 };
 }
 
 RA2Normals_Table[0].X = 0.526578009128571;
@@ -741,6 +747,7 @@ RA2Normals_Table[243].Y = 0.140250995755196;
 RA2Normals_Table[243].Z = 0.934143006801605;
 
 // VXLSE
+if(process.env.VP_NORMAL_VXLSE){
 RA2Normals_Table[0].Z = 0.526578009128571;
 RA2Normals_Table[0].X = -0.359620988368988;
 RA2Normals_Table[0].Y = -0.770317018032074;
@@ -1473,3 +1480,115 @@ RA2Normals_Table[242].Y = 0.934143006801605;
 RA2Normals_Table[243].Z = -0.328188002109528;
 RA2Normals_Table[243].X = 0.140250995755196;
 RA2Normals_Table[243].Y = 0.934143006801605;
+}
+
+
+TSNormals_Table[0].X = 0.671213984489441;
+TSNormals_Table[0].Y = 0.198492005467415;
+TSNormals_Table[0].Z = -0.714193999767303;
+TSNormals_Table[1].X = 0.269643008708954;
+TSNormals_Table[1].Y = 0.584393978118897;
+TSNormals_Table[1].Z = -0.765359997749329;
+TSNormals_Table[2].X = -0.0405460000038147;
+TSNormals_Table[2].Y = 0.0969879999756813;
+TSNormals_Table[2].Z = -0.994458973407745;
+TSNormals_Table[3].X = -0.572427988052368;
+TSNormals_Table[3].Y = -0.0919139981269836;
+TSNormals_Table[3].Z = -0.814786970615387;
+TSNormals_Table[4].X = -0.171400994062424;
+TSNormals_Table[4].Y = -0.572709977626801;
+TSNormals_Table[4].Z = -0.801639020442963;
+TSNormals_Table[5].X = 0.362556993961334;
+TSNormals_Table[5].Y = -0.30299898982048;
+TSNormals_Table[5].Z = -0.881331026554108;
+TSNormals_Table[6].X = 0.810347020626068;
+TSNormals_Table[6].Y = -0.348971992731094;
+TSNormals_Table[6].Z = -0.470697999000549;
+TSNormals_Table[7].X = 0.103961996734142;
+TSNormals_Table[7].Y = 0.938672006130218;
+TSNormals_Table[7].Z = -0.328767001628876;
+TSNormals_Table[8].X = -0.32404699921608;
+TSNormals_Table[8].Y = 0.587669014930725;
+TSNormals_Table[8].Z = -0.741375982761383;
+TSNormals_Table[9].X = -0.800864994525909;
+TSNormals_Table[9].Y = 0.340460985898972;
+TSNormals_Table[9].Z = -0.492646992206574;
+TSNormals_Table[10].X = -0.665498018264771;
+TSNormals_Table[10].Y = -0.590147018432617;
+TSNormals_Table[10].Z = -0.456988990306854;
+TSNormals_Table[11].X = 0.314767003059387;
+TSNormals_Table[11].Y = -0.803001999855042;
+TSNormals_Table[11].Z = -0.506072998046875;
+TSNormals_Table[12].X = 0.972629010677338;
+TSNormals_Table[12].Y = 0.151076003909111;
+TSNormals_Table[12].Z = -0.176550000905991;
+TSNormals_Table[13].X = 0.680290997028351;
+TSNormals_Table[13].Y = 0.684235990047455;
+TSNormals_Table[13].Z = -0.262726992368698;
+TSNormals_Table[14].X = -0.520079016685486;
+TSNormals_Table[14].Y = 0.827777028083801;
+TSNormals_Table[14].Z = -0.210482999682426;
+TSNormals_Table[15].X = -0.961643993854523;
+TSNormals_Table[15].Y = -0.179001003503799;
+TSNormals_Table[15].Z = -0.207846999168396;
+TSNormals_Table[16].X = -0.262713998556137;
+TSNormals_Table[16].Y = -0.937451004981995;
+TSNormals_Table[16].Z = -0.228401005268097;
+TSNormals_Table[17].X = 0.219706997275352;
+TSNormals_Table[17].Y = -0.971301019191742;
+TSNormals_Table[17].Z = 0.0911249965429306;
+TSNormals_Table[18].X = 0.923807978630066;
+TSNormals_Table[18].Y = -0.229975000023842;
+TSNormals_Table[18].Z = 0.306086987257004;
+TSNormals_Table[19].X = -0.0824889987707138;
+TSNormals_Table[19].Y = 0.970659971237183;
+TSNormals_Table[19].Z = 0.225866004824638;
+TSNormals_Table[20].X = -0.591798007488251;
+TSNormals_Table[20].Y = 0.696789979934692;
+TSNormals_Table[20].Z = 0.405288994312286;
+TSNormals_Table[21].X = -0.925296008586884;
+TSNormals_Table[21].Y = 0.36660099029541;
+TSNormals_Table[21].Z = 0.0971110016107559;
+TSNormals_Table[22].X = -0.705051004886627;
+TSNormals_Table[22].Y = -0.687775015830994;
+TSNormals_Table[22].Z = 0.172828003764153;
+TSNormals_Table[23].X = 0.732400000095367;
+TSNormals_Table[23].Y = -0.680366992950439;
+TSNormals_Table[23].Z = -0.0263049993664026;
+TSNormals_Table[24].X = 0.855162024497986;
+TSNormals_Table[24].Y = 0.37458199262619;
+TSNormals_Table[24].Z = 0.358310997486114;
+TSNormals_Table[25].X = 0.473006010055542;
+TSNormals_Table[25].Y = 0.836480021476746;
+TSNormals_Table[25].Z = 0.276704996824265;
+TSNormals_Table[26].X = -0.0976170003414154;
+TSNormals_Table[26].Y = 0.654111981391907;
+TSNormals_Table[26].Z = 0.750072002410889;
+TSNormals_Table[27].X = -0.904124021530151;
+TSNormals_Table[27].Y = -0.153724998235703;
+TSNormals_Table[27].Z = 0.398658007383347;
+TSNormals_Table[28].X = -0.211915999650955;
+TSNormals_Table[28].Y = -0.858089983463287;
+TSNormals_Table[28].Z = 0.467732012271881;
+TSNormals_Table[29].X = 0.500226974487305;
+TSNormals_Table[29].Y = -0.67440801858902;
+TSNormals_Table[29].Z = 0.543090999126434;
+TSNormals_Table[30].X = 0.584538996219635;
+TSNormals_Table[30].Y = -0.110248997807503;
+TSNormals_Table[30].Z = 0.8038409948349;
+TSNormals_Table[31].X = 0.437373012304306;
+TSNormals_Table[31].Y = 0.454643994569778;
+TSNormals_Table[31].Z = 0.775888979434967;
+TSNormals_Table[32].X = -0.0424409992992878;
+TSNormals_Table[32].Y = 0.0833180025219917;
+TSNormals_Table[32].Z = 0.995618999004364;
+TSNormals_Table[33].X = -0.596251010894775;
+TSNormals_Table[33].Y = 0.220131993293762;
+TSNormals_Table[33].Z = 0.772028028964996;
+TSNormals_Table[34].X = -0.50645500421524;
+TSNormals_Table[34].Y = -0.396977007389069;
+TSNormals_Table[34].Z = 0.765448987483978;
+TSNormals_Table[35].X = 0.0705690011382103;
+TSNormals_Table[35].Y = -0.478473991155624;
+TSNormals_Table[35].Z = 0.875262022018433;
+

@@ -27,6 +27,10 @@ bun ${tool_dir}/src/main.ts ${from_type}-${to_type} ${input_file} ${output_file}
 *   `normalrange`: `number`，指定自动法线算法应用的半径，默认 `3.5`。
 *   `palettetransform`: `boolean`，指定是否对vox文件应用色盘转换。该转换算法以上图中使用的色盘进行反向变换。
 
+## 自动法线
+
+本项目通过 AI 辅助开发集成了 VXLSE III 1.38 中使用的 Tangent Plane 自动法线算法。通过 `autonormal` 选项启用。
+
 ## 多组件
 
 多组件支持尚在试验阶段。目前，你可以：

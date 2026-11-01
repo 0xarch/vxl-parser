@@ -4,6 +4,10 @@ import { voxel, vxl, vxl_limb_tailer } from "./types";
 function compressSpan(voxels: voxel[], zSize: number): Uint8Array {
     const chunks: Uint8Array[] = [];
     let z = 0;
+    // VXLSE only writes the 3-byte terminator (skip, 0, 0) when the span
+    // ends with one or more empty voxels. If the last voxel is used there is
+    // no padding at all.
+    let wroteTrailingSkip = false;
     while (z < zSize) {
         // 计算跳过的空体素数（可能为 0）
         let skip = 0;
@@ -11,7 +15,10 @@ function compressSpan(voxels: voxel[], zSize: number): Uint8Array {
         // 总是写入 skip 字节（允许 0）
         chunks.push(new Uint8Array([skip]));
         z += skip;
-        if (z >= zSize) break;
+        if (z >= zSize) {
+            wroteTrailingSkip = true;
+            break;
+        }
 
         // 连续非空体素块
         let nv = 0;
@@ -27,9 +34,12 @@ function compressSpan(voxels: voxel[], zSize: number): Uint8Array {
         chunks.push(block);
         chunks.push(new Uint8Array([nv])); // 尾部 nv
         z += nv;
+        wroteTrailingSkip = false;
     }
-    // 每个跨度结束后加 2 字节填充（如需完全一致，应从原始数据复制）
-    chunks.push(new Uint8Array(2));
+    if (wroteTrailingSkip) {
+        // Dummy terminator: span length 0.
+        chunks.push(new Uint8Array(2));
+    }
     // 合并
     let totalLen = chunks.reduce((sum, arr) => sum + arr.length, 0);
     let result = new Uint8Array(totalLen);
@@ -87,7 +97,8 @@ export function bufferify(vxl: vxl): ArrayBuffer {
             }
             const compressed = compressSpan(spanArrays[j], zsize);
             spanStartOffsets[j] = dataOffset;
-            spanEndOffsets[j] = dataOffset + compressed.length;
+            // VXLSE stores the offset of the last byte of the span (inclusive).
+            spanEndOffsets[j] = dataOffset + compressed.length - 1;
             compressedChunks.push(compressed);
             dataOffset += compressed.length;
         }
